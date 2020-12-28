@@ -35,6 +35,13 @@ module Idv
         verify_document_capture_session.requested_at = Time.zone.now
         verify_document_capture_session.create_doc_auth_session
 
+        extra_log_info = if LoginGov::Hostdata.env == 'dev'
+          {
+            flow_session: flow_session.except(:pii_from_doc),
+            flow_session_keys: flow_session.keys,
+          }
+        end
+
         @flow.analytics.track_event(
           Analytics::DOC_AUTH_ASYNC,
           info: 'creating document capture session',
@@ -42,6 +49,7 @@ module Idv
           uuid: verify_document_capture_session.uuid,
           result_id: verify_document_capture_session.result_id,
           flow_session_key: flow_session[verify_document_capture_session_uuid_key],
+          **extra_log_info.to_h,
         )
 
         callback_url = Rails.application.routes.url_helpers.document_proof_result_url(
