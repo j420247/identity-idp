@@ -35,7 +35,7 @@ module Idv
         verify_document_capture_session.requested_at = Time.zone.now
         verify_document_capture_session.create_doc_auth_session
 
-        extra_log_info = if LoginGov::Hostdata.env == 'dev'
+        extra_log_info = if !%w[prod staging int].include?(LoginGov::Hostdata.env)
           {
             flow_session: flow_session.except(:pii_from_doc),
             flow_session_keys: flow_session.keys,
