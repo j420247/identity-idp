@@ -4,6 +4,8 @@
 # For further information see the following documentation
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+require_relative '../../lib/secure_headers_whitelister'
+
 img_src = [
   :self,
   :data,
@@ -21,7 +23,7 @@ connect_src = SecureHeadersWhitelister.connect_src
 style_src =  if !Rails.env.production?
                [:self, :unsafe_inline]
              else
-               [:self, AppConfig.env.asset_host]
+               [:self, AppConfig.env.asset_host].select(&:present?)
              end
 font_src = [:self, :data, AppConfig.env.asset_host].select(&:present?)
 style_src = [:self, AppConfig.env.asset_host].select(&:present?)

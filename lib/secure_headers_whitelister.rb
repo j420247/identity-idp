@@ -31,7 +31,7 @@ class SecureHeadersWhitelister
         'www.google.com',
         'www.gstatic.com',
         AppConfig.env.asset_host
-      ]
+      ].select(&:present?)
     end
   end
 

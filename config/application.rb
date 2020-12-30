@@ -10,7 +10,6 @@ require 'sprockets/railtie'
 require_relative '../lib/upaya_log_formatter'
 require_relative '../lib/app_config'
 require_relative '../lib/fingerprinter'
-require_relative '../lib/secure_headers_whitelister'
 
 Bundler.require(*Rails.groups)
 
